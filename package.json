@@ -1,0 +1,21 @@
+{
+  "name": "execution-line",
+  "version": "1.0.0",
+  "description": "a hook system to execute functions sequentially, like \"pipe\" or \"compose\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hook",
+    "pipe",
+    "compose",
+    "execute",
+    "queue",
+    "line",
+    "execution",
+    "linked"
+  ],
+  "author": "DanielSunami",
+  "license": "MIT"
+}

@@ -4,63 +4,43 @@ function ExecutionLine(ctx, customObject) {
 	ctx = ctx || {};
 	customObject = customObject || null;
 
-	Object.defineProperties(this, {
-		'ctx': {
-			enumerable: false,
-			configurable: false,
-			writable: true,
-			value: ctx
-		},
-		'customObject': {
-			enumerable: false,
-			configurable: false,
-			writable: true,
-			value: customObject
-		},
-		'line': {
-			enumerable: true,
-			configurable: false,
-			writable: false,
-			value: new Array()
-		}
-	});
+	let line = [];
 
-	function hasNext() { if(this.line.length > 0) return true; else return false; }
+	function hasNext() { if(line.length > 0) return true; else return false; }
 
 	function nextFn() {
-		if(hasNext()) return this.line.shift();
+		if(hasNext()) return line.shift();
 		else return function(){};
 	}
 
 	function next() {
-		if(this.customObject === null)
-			nextFn().call(this.ctx, this.customObject, next);
+		if(customObject === null)
+			nextFn().call(ctx, next);
 		else 
-			nextFn().call(this.ctx, next);
+			nextFn().call(ctx, customObject, next);
 	}
-}
 
+	this.hook = function(fn) {
+		if(!fn || !(fn instanceof Array || fn instanceof Function))
+			throw new TypeError('You must hook a Function or an Array of Functions');
 
-ExecutionLine.prototype.hook = function(fn) {
-	if(!fn || !(fn instanceof Array || fn instanceof Function))
-		throw new TypeError('You must hook a Function or an Array of Functions');
+		if(fn instanceof Array) {
+			for(let i = 0; i < fn.length; i++) {
+				if(!(fn[i] instanceof Function)) throw new TypeError('You must hook a Array of Functions');
+			}
 
-	if(fn instanceof Array) {
-		for(let i = 0; i < fn.length; i++) {
-			if(!(fn[i] instanceof Function)) throw new TypeError('You must hook a Array of Functions');
-		}
+			line.push(...fn);
+		} else line.push(fn);
+	}
 
-		this.line.push(...fn);
-	} else this.line.push(fn);
-}
+	this.exec = function() {
+		if(!hasNext()) return false;
+		next();
+	}
 
-ExecutionLine.prototype.exec = function() {
-	if(!hasNext()) return false;
-	this.next();
-}
-
-ExecutionLine.prototype.clear = function() {
-	this.line = [];
+	this.clear = function() {
+		line = [];
+	}
 }
 
 module.exports = ExecutionLine;

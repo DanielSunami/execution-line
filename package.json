@@ -17,5 +17,9 @@
     "linked"
   ],
   "author": "DanielSunami",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "tap-spec": "^5.0.0",
+    "tape": "^4.11.0"
+  }
 }

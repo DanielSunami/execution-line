@@ -9,16 +9,13 @@
 
 		function hasNext() { if(line.length > 0) return true; else return false; }
 
-		function nextFn() {
-			if(hasNext()) return line.shift();
-			else return _self.onexecutionend;
-		}
-
 		function next() {
-			if(customObject === null)
-				nextFn().call(ctx, next);
+			if(!hasNext())
+				_self.onexecutionend.call(ctx, customObject);
+			else if(customObject === null)
+				line.shift().call(ctx, next);
 			else 
-				nextFn().call(ctx, customObject, next);
+				line.shift().call(ctx, customObject, next);
 		}
 
 		this.onexecutionend = function() {}

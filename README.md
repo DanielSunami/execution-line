@@ -6,6 +6,10 @@ Ensures a sequential execution of functions, helps you escape callback hell, com
 ```sh
 $ npm install execution-line
 ```
+Browser
+```html
+<script type="text/javascript" src="/path/to/execution-line.min.js"></script>
+```
 ## API
 ### Constructor
 ```javascript

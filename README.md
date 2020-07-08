@@ -23,6 +23,7 @@ You must always use an instance.
 let line = new ExecutionLine();
 ``` 
 ### line.hook(fn)
+Hook functions to the line.
 
 #### Parameters
 Name      | Type   | Required | Description 
@@ -30,7 +31,6 @@ Name      | Type   | Required | Description
 fn   | Function or Array | Required | if a Array is passed it must be an Array of Functions, otherwise it will throw TypeError
 
 #### Usage
-Hook functions to the line.
 ```javascript
 line.hook([
   function(next){ /* step 1 */ next(); },
@@ -43,12 +43,26 @@ Executes all hooked functions. Each function is removed from the line to be exec
 ### line.clear()
 Clear line, removes all hooked functions.
 
+### line.onexecutionend
+Executed after all functions, it shares the same context as your other functions. Only works if the last function calls `next()`.
+
+#### Parameters
+Name      | Type   | Description 
+--------- | ------ | --
+myObject  | Object or Null | a custom object to use across all functions
+
+#### Usage
+```javascript
+line.onexecutionend = function(myObject) {}
+```
 ## Usage
 
 ### Example 1
 Basic usage
 ```javascript
+// only needed on nodejs
 let ExecutionLine = require('execution-line');
+
 let lineA = new ExecutionLine();
 
 function firstA(next) { 
@@ -90,6 +104,7 @@ lineB.exec();
 ### Example 2
 Changing context, thisArg 
 ```javascript
+// only needed on nodejs
 let ExecutionLine = require('execution-line');
 
 let line  = new ExecutionLine({ e: 'element'});
@@ -105,6 +120,7 @@ line.exec();
 ### Example 3
 Passing a object to functions
 ```javascript
+// only needed on nodejs
 let ExecutionLine = require('execution-line');
 
 let line  = new ExecutionLine({}, { prop: 'string'});
@@ -122,6 +138,38 @@ line.exec();
 // string
 ```
 ### Example 4
+Using onexecutionend 
+```javascript
+// only needed on nodejs
+let ExecutionLine = require('execution-line');
+
+let line  = new ExecutionLine();
+line.hook(function(next){
+  console.log('step 1');
+  // not calling next()
+});
+
+line.onexecutionend = function() {
+  console.log('final step');
+}
+
+line.exec();
+
+// outputs
+// step 1
+
+// hooking again because after execution the line is clear
+line.hook(function(next) {
+  console.log('step 1');
+  // calling next()
+  next();
+});
+
+// outputs
+// step 1
+// final step
+```
+### Example 5
 Escaping callback hell, silly example using callback:
 ```javascript
 element.onclick(function(event){

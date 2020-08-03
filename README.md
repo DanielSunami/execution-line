@@ -229,3 +229,7 @@ element.onclick = function() {
 ## License
 
 [MIT](LICENSE)
+
+## Sponsors
+
+[![Logo Dokoro](https://dokoro.com.br/assets/img/logo-color.png "Logo Dokoro")](https://dokoro.com.br/)

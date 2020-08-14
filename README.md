@@ -232,4 +232,4 @@ element.onclick = function() {
 
 ## Sponsors
 
-[![Logo Dokoro](https://dokoro.com.br/assets/img/logo-color.png "Logo Dokoro")](https://dokoro.com.br/)
+<a href="https://dokoro.com.br/"><img src="https://danielsunami.github.io/dir-routes/image/dokoro-logo-color.png" alt="Logo Dokoro" width="200"/></a>
